@@ -127,77 +127,14 @@ end
 
 def num_points_scored(name)
   game_hash.each do |location, team_data|
-    players_array = team_data[:players]
-    players_array.each do |player_name, data| 
-      if player_name == name
-        return data[:points]
-      end
+    team_data.each do |attribute, data| #why does this only return :team_name
+      binding.pry 
     end 
   end 
 end
 
-def shoe_size(name)
-  game_hash.each do |location, team_data|
-    players_array = team_data[:players]
-    players_array.each do |player_name, data| 
-      if player_name == name
-        return data[:shoe]
-      end
-    end 
-  end 
-end
 
-def team_colors(team)
-  game_hash.each do |location, team_data|
-    if team_data[:team_name] == team
-      return team_data[:colors]
-    end
-  end
-end 
 
-def team_names
-  answer = []
-  game_hash.each do |location, team_data|
-    answer.push(team_data[:team_name])
-  end
-  answer
-end
 
-def player_numbers(team)
-  answer = []
-  game_hash.each do |location, team_data|
-    if team_data[:team_name] == team
-      players_array = team_data[:players]
-      players_array.each do |player_name, data|
-        answer.push(data[:number])
-      end 
-    end
-  end 
-  return answer
-end 
 
-def player_stats(name)
-  game_hash.each do |location, team_data|
-    players_array = team_data[:players]
-    players_array.each do |player_name, data| 
-      if player_name == name
-        return data
-      end
-    end 
-  end 
-end
 
-def big_shoe_rebounds
-  shoe_size = 0
-  rebounds = 0 
-    game_hash.each do |location, team_data|
-    players_array = team_data[:players]
-    players_array.each do |player_name, data| 
-      if data[:shoe] > shoe_size
-        shoe_size = data[:shoe]
-        rebounds = data[:rebounds]
-      end
-    end 
-  end 
-  return rebounds
-end
