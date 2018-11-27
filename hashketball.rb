@@ -121,19 +121,29 @@ def game_hash
   } # end of teams
 end
 
-def num_points_scored(player_name)
-  game_hash.each do |teams, team_data| # teams == home/away | team_data == teams' key
-    team_data.each do |attribute, data|  # attribute == keys || data == value
-      if attribute == :players
-        data.each do |name, stats| # name is the players names | stats is their stats
-          if player_name == name
-            stats.each do |k, v|
-              if k == :points
-                return v
-              end
-            end
-          end
-        end
+# def num_points_scored(player_name)
+#   game_hash.each do |teams, team_data| # teams == home/away | team_data == teams' key
+#     team_data.each do |attribute, data|  # attribute == keys || data == value
+#       if attribute == :players
+#         data.each do |name, stats| # name is the players names | stats is their stats
+#           if player_name == name
+#             stats.each do |k, v|
+#               if k == :points
+#                 return v
+#               end
+#             end
+#           end
+#         end
+#       end
+#     end
+#   end
+# end
+
+def num_points_scored(player_name) #improved and shorter method
+  game_hash.each do |location, attributes| # location gets the team and attributes is everything in it like players
+    attributes[:players].each do |key, value| # attributes[:players] to only get the players and itterate through it
+      if key == player_name # if the key is == to the name then that is the block we want
+        return value[:points] # we access the value to get the points
       end
     end
   end
@@ -157,16 +167,24 @@ def shoe_size(player_name)
   end
 end
 
-def team_colors(x)
-  game_hash.each do |team, traits| # team is either home or away | traits is their values
-    traits.each do |attribute, value|
-      if value == x # if the value of x which is the give argument exist in the values
-        traits.each do |key, color| # then we use the traits again to only iterate through the trait with the value
-          if key == :colors # now that our :color is limited to one we can just return that color
-            return color
-          end
-        end
-      end
+# def team_colors(x)
+#   game_hash.each do |team, traits| # team is either home or away | traits is their values
+#     traits.each do |attribute, value|
+#       if value == x # if the value of x which is the give argument exist in the values
+#         traits.each do |key, color| # then we use the traits again to only iterate through the trait with the value
+#           if key == :colors # now that our :color is limited to one we can just return that color
+#             return color
+#           end
+#         end
+#       end
+#     end
+#   end
+# end
+
+def team_colors(x) # much shorter and improved
+  game_hash.each do |location, info| # itterate through the hash to get the info
+    if info[:team_name] == x # if our argument is == to the team name then we use that block
+      return info[:colors] # using that block we return the colors
     end
   end
 end
