@@ -141,27 +141,37 @@ end
 
 def num_points_scored(player_name) #improved and shorter method
   game_hash.each do |location, attributes| # location gets the team and attributes is everything in it like players
-    attributes[:players].each do |key, value| # attributes[:players] to only get the players and itterate through it
-      if key == player_name # if the key is == to the name then that is the block we want
-        return value[:points] # we access the value to get the points
+    attributes[:players].each do |name, stats| # attributes[:players] to only get the players and itterate through it
+      if name == player_name # if the key is == to the name then that is the block we want
+        return stats[:points] # we access the value to get the points
       end
     end
   end
 end
 
-def shoe_size(player_name)
-  game_hash.each do |teams, team_data| # teams == home/away | team_data == teams' key
-    team_data.each do |attribute, data|  # attribute == keys || data == value
-      if attribute == :players
-        data.each do |name, stats| # name is the players names | stats is their stats
-          if player_name == name
-            stats.each do |k, v|
-              if k == :shoe
-                return v
-              end
-            end
-          end
-        end
+# def shoe_size(player_name)
+#   game_hash.each do |teams, team_data| # teams == home/away | team_data == teams' key
+#     team_data.each do |attribute, data|  # attribute == keys || data == value
+#       if attribute == :players
+#         data.each do |name, stats| # name is the players names | stats is their stats
+#           if player_name == name
+#             stats.each do |k, v|
+#               if k == :shoe
+#                 return v
+#               end
+#             end
+#           end
+#         end
+#       end
+#     end
+#   end
+# end
+
+def shoe_size(player_name) # shorter version
+  game_hash.each do |location, info| # itterate through the data
+    info[:players].each do |player_name2, stats|
+      if player_name == player_name2
+        return stats[:shoe]
       end
     end
   end
