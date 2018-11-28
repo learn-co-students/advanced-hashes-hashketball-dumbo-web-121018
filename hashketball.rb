@@ -174,25 +174,22 @@ def player_stats(player)
 end
 
 def big_shoe_rebounds
-  max_shoe = []
-  max_shoe_player = nil
+  big_shoe = {}
+
   game_hash.each do |key, val|
     val[:players].each do |player, stats|
-      if max_shoe.empty?
-        max_shoe << stats[:shoe]
-      end
-      
-      if stats[:shoe] > max_shoe.max
-        max_shoe_player = player
-        max_shoe << stats[:shoe]
-      end
+      big_shoe.store(player, shoe_size(player))
     end
   end
-  if game_hash[:home][:players].include?(max_shoe_player)
-    game_hash[:home][:players][max_shoe_player][:rebounds]
+  big_shoe_player = big_shoe.max_by {|k,v| v}[0] # Figured out later
+  
+  if game_hash[:home][:players].include?(big_shoe_player)
+    game_hash[:home][:players][big_shoe_player][:rebounds]
   else
-    game_hash[:away][:players][max_shoe_player][:rebounds]
+    game_hash[:away][:players][big_shoe_player][:rebounds]
   end
+  
+  
 end
 
 def most_points_scored
@@ -224,9 +221,9 @@ def winning_team
       stats[:points]
     end
   end
-  team_1 = points[0].inject(:+)
-  team_2 = points[1].inject(:+)
-  if team_1 > team_2
+  home_team = points[0].inject(:+)
+  away_team = points[1].inject(:+)
+  if home_team > away_team
     game_hash[:home][:team_name]
   else
     game_hash[:away][:team_name]
@@ -235,9 +232,9 @@ end
 
 def player_with_longest_name
   names = game_hash.map {|site, attributes| game_hash[site][:players].keys}.flatten
-  char_count = names.map {|name| name.length} 
-  char_count.each_with_index do |characters, i|
-    if characters == char_count.max
+  char_count_array = names.map {|name| name.length} 
+  char_count_array.each_with_index do |character_amt, i|
+    if character_amt == char_count_array.max
       return names[i]
     end
   end
@@ -259,7 +256,7 @@ def long_name_steals_a_ton?
   
   the_steals = steals.flatten
   the_players = players.flatten
-  
+
   the_steals.each_with_index do |steals, i|
     if steals == the_steals.max
       who = the_players[i]
