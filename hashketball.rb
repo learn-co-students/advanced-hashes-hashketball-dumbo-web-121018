@@ -119,17 +119,10 @@ end
 
 def num_points_scored(player_name)
   game_hash.each do |location, team_data|
-    team_data.each do |attribute, data1|
-      if attribute.to_s == "players"
-        data1.each do |name, data2|
-          if name.to_s == player_name
-            data2.each do |statistic, value|
-              if statistic.to_s == "points"
-                return value
-              end
-            end
-          end
-        end
+    team_data[:players].each do |name,stat_info|
+      if name == player_name
+        return stat_info[:points]
+          binding.pry
       end
     end
   end
@@ -245,6 +238,19 @@ def big_shoe_rebounds
     end
   end
 end
+
+
+def player_by_num(num)
+  game_hash.each do |location,team_data|
+    team_data[:players].each do |player_name,stat_info|
+      if stat_info[:number] == num
+        return player_name
+      end
+    end
+  end
+end
+
+puts player_by_num(33)
 
 
 
