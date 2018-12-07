@@ -224,14 +224,10 @@ def player_numbers(team_name) # return array of teams jersey #
 end
 
 def player_stats(player)
-  game_hash.each do |location, attributes|
-    attributes.each do |key, values| #key is team name colors players
-      if key == :players
-        values.each do |k, v|
-          if k == player
-            return v
-          end
-        end
+  game_hash.each do |location, info|
+    info[:players].each do |name, stats|
+      if player == name
+        return stats
       end
     end
   end
@@ -249,37 +245,3 @@ def big_shoe_rebounds # find the person with the biggest shoe and return the amo
     return info[:players][biggest_shoe][:rebounds]
   end
 end
-
-# shoe_hash = Hash.new(0)
-#
-# game_hash.each do |location, attributes|
-#   attributes.each do |key, values|
-#     if key == :players
-#       values.each do |name, status|
-#         status.each do |k, v|
-#           if k == :shoe
-#             shoe_hash[name] = v
-#           end
-#         end
-#       end
-#     end
-#   end
-# end
-# sorted = shoe_hash.sort_by { |k, v| v}
-# biggest_shoe = sorted[-1][0] # Mason Plumlee 19
-#
-# game_hash.each do |location, attributes|
-#   attributes.each do |key, values|
-#     if key == :players
-#       values.each do |k, v|
-#         if k == biggest_shoe
-#           v.each do |rebound, rebound_value|
-#             if rebound == :rebounds
-#               return rebound_value
-#             end
-#           end
-#         end
-#       end
-#     end
-#   end
-# end
