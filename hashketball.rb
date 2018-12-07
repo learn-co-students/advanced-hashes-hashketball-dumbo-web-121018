@@ -213,20 +213,10 @@ end
 
 def player_numbers(team_name) # return array of teams jersey #
   arr = []
-  game_hash.each do |location, attribute|
-    attribute.each do |keys, value|
-      if value == team_name #if the team name matches
-        attribute.each do |k, v|
-          if k == :players
-            v.each do |player, numbers|
-              numbers.each do |x, y|
-                if x == :number
-                  arr << y
-                end
-              end
-            end
-          end
-        end
+  game_hash.each do |location, info|
+    if info[:team_name] == team_name
+      info[:players].each do |player, number|
+        arr << number[:number]
       end
     end
   end
@@ -248,39 +238,48 @@ def player_stats(player)
 end
 
 def big_shoe_rebounds # find the person with the biggest shoe and return the amount of rebounds they have
-
-
-  shoe_hash = Hash.new(0)
-
-  game_hash.each do |location, attributes|
-    attributes.each do |key, values|
-      if key == :players
-        values.each do |name, status|
-          status.each do |k, v|
-            if k == :shoe
-              shoe_hash[name] = v
-            end
-          end
-        end
-      end
+  shoe_hash = {}
+  game_hash.each do |location, info|
+    info[:players].each do |name, stats|
+      shoe_hash[name] = stats[:shoe]
     end
   end
-  sorted = shoe_hash.sort_by { |k, v| v}
-  biggest_shoe = sorted[-1][0] # Mason Plumlee 19
-
-  game_hash.each do |location, attributes|
-    attributes.each do |key, values|
-      if key == :players
-        values.each do |k, v|
-          if k == biggest_shoe
-            v.each do |rebound, rebound_value|
-              if rebound == :rebounds
-                return rebound_value
-              end
-            end
-          end
-        end
-      end
-    end
+  biggest_shoe = shoe_hash.sort_by { |name, shoe| shoe }[-1][0]
+  game_hash.each do |location, info|
+    return info[:players][biggest_shoe][:rebounds]
   end
 end
+
+# shoe_hash = Hash.new(0)
+#
+# game_hash.each do |location, attributes|
+#   attributes.each do |key, values|
+#     if key == :players
+#       values.each do |name, status|
+#         status.each do |k, v|
+#           if k == :shoe
+#             shoe_hash[name] = v
+#           end
+#         end
+#       end
+#     end
+#   end
+# end
+# sorted = shoe_hash.sort_by { |k, v| v}
+# biggest_shoe = sorted[-1][0] # Mason Plumlee 19
+#
+# game_hash.each do |location, attributes|
+#   attributes.each do |key, values|
+#     if key == :players
+#       values.each do |k, v|
+#         if k == biggest_shoe
+#           v.each do |rebound, rebound_value|
+#             if rebound == :rebounds
+#               return rebound_value
+#             end
+#           end
+#         end
+#       end
+#     end
+#   end
+# end
