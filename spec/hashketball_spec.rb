@@ -1,4 +1,5 @@
 require 'spec_helper'
+require_relative '../hashketball.rb'
 
 describe 'hashketball' do
 
